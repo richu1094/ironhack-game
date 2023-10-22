@@ -1,16 +1,16 @@
 class Player {
-  constructor(gameScreen) {
+  constructor(gameScreen, gameSize) {
 
-    this.gameScreen = gameScreen;
-
+    this.gameScreen = gameScreen
+    this.gameSize = gameSize
     this.squareSize = {
       w: 100,
       h: 100,
-    };
+    }
 
     this.squarePos = {
-      left: gameScreen.w / 2 - this.squareSize.w / 2,
-      top: gameScreen.h / 2 - this.squareSize.h / 2,
+      left: gameSize.w / 2,
+      top: gameSize.h / 2,
 
     };
 

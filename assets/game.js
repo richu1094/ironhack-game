@@ -1,8 +1,7 @@
-
 const Game = {
   gameScreen: document.querySelector("#game-screen"),
 
-  gameScreen: {
+  gameSize: {
     w: window.innerWidth,
     h: window.innerHeight,
   },
@@ -32,16 +31,19 @@ const Game = {
   start() {
     this.createElements();
     this.gameLoop();
-    document.body.style.backgroundColor = "red";
   },
 
   createElements() {
-    this.player = new Player(this.gameScreen);
+    this.background = new Background(this.gameScreen, this.gameSize)
+    this.player = new Player(this.gameScreen, this.gameSize);
   },
 
   gameLoop() {
     this.player.move()
     window.requestAnimationFrame(() => this.gameLoop());
   },
+
+
+
 };
 
