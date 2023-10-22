@@ -1,37 +1,35 @@
+const canvas = document.querySelector("canvas");
+const context = canvas.getContext("2d");
+
 const Game = {
   gameScreen: document.querySelector("#game-screen"),
 
   gameScreen: {
-    w: window.innerWidth,
+    w: canvas.innerWidth,
     h: window.innerHeight,
   },
   background: undefined,
   player: undefined,
 
-  keys: { JUMP: 'ArrowUp', LEFT: "ArrowLeft", RIGHT: "ArrowRight" },
+  keys: { LEFT: "ArrowLeft", RIGHT: "ArrowRight" },
 
   init() {
     this.start();
+    this.setEventListeners()
   },
 
   setEventListeners() {
-    "keydown", key => {
+    document.addEventListener("keydown", key => {
       switch (key.code) {
-        case this.keys.JUMP:
-          this.player.JUMP
-          break;
         case this.keys.LEFT:
-          this.player.LEFT
+          this.player.moveLeft()
           break;
         case this.keys.RIGHT:
-          this.player.RIGHT
-          break
+          this.player.moveRight()
+          break;
       }
-    }
-
-
-  }
-
+    })
+  },
 
   start() {
     this.createElements();
@@ -44,6 +42,8 @@ const Game = {
   },
 
   gameLoop() {
+    this.player.move()
     window.requestAnimationFrame(() => this.gameLoop());
   },
 };
+
