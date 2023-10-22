@@ -1,11 +1,9 @@
-const canvas = document.querySelector("canvas");
-const context = canvas.getContext("2d");
 
 const Game = {
   gameScreen: document.querySelector("#game-screen"),
 
   gameScreen: {
-    w: canvas.innerWidth,
+    w: window.innerWidth,
     h: window.innerHeight,
   },
   background: undefined,
