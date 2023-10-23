@@ -12,7 +12,7 @@ class Background {
 
     init() {
         this.gameBackground = document.createElement('img')
-       
+
         this.gameBackground.style.position = "absolute"
         this.gameBackground.src = "./images/clouds.jpg"
         this.gameBackground.style.width = `${this.backgroundSize.w}px`

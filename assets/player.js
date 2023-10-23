@@ -4,8 +4,8 @@ class Player {
     this.gameSize = gameSize;
 
     this.squareSize = {
-      w: 10,
-      h: 10,
+      w: 20,
+      h: 20,
     };
 
     this.squarePos = {
