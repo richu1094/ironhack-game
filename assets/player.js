@@ -4,18 +4,20 @@ class Player {
     this.gameSize = gameSize;
 
     this.squareSize = {
-      w: 50,
-      h: 50,
+      w: 10,
+      h: 10,
     };
 
     this.squarePos = {
-      left: gameSize.w / 2 - this.squareSize.w / 2,
-      top: gameSize.h / 2 - this.squareSize.h / 2,
+      left: this.gameSize.w / 2 - this.squareSize.w / 2,
+      top: this.gameSize.h / 2 - this.squareSize.h / 2,
+      base: this.gameSize.h,
     };
 
     this.squareVel = {
       left: 10,
       top: 10,
+      gravity: 0.3,
     };
 
     this.init();
@@ -36,23 +38,37 @@ class Player {
   }
 
   move() {
+    if (this.squarePos.top < this.squarePos.base) {
+      this.squarePos.top += this.squareVel.top;
+      this.squareVel.top += this.squareVel.gravity;
+    } else {
+      this.squarePos.top = this.squarePos.base;
+      this.squareVel.top = 1;
+    }
+
     this.updatePosition();
   }
 
   moveLeft() {
-    this.squarePos.left -= this.squareVel.left;
+    if (this.squarePos.left > 0) {
+      this.squarePos.left -= this.squareVel.left;
+    }
   }
 
   moveRight() {
-    this.squarePos.left += this.squareVel.left;
+    if (this.squarePos.left < this.gameSize.w - this.squareSize.w) {
+      this.squarePos.left += this.squareVel.left;
+    }
   }
 
   moveUp() {
-    this.squarePos.top -= this.squareVel.top;
+    this.squarePos.top -= 150;
   }
 
   moveDown() {
-    this.squarePos.top += this.squareVel.top;
+    if (this.squarePos.top < this.gameSize.h) {
+      this.squarePos.top += this.squareVel.top;
+    }
   }
 
   updatePosition() {

@@ -20,7 +20,7 @@ class Background {
         this.gameBackground.style.left = `${this.backgroundPosition.left}px`
         this.gameBackground.style.top = `${this.backgroundPosition.top}px`
         this.gameBackground.style.zIndex = 1
-        this.gameBackground.style.border = `1px solid #000000`
+        this.gameBackground.style.border = `10px solid red`
 
 
         this.gameContainer.appendChild(this.gameBackground)

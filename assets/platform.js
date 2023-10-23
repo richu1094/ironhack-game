@@ -1,7 +1,9 @@
 class Platform {
-  constructor(gameScreen, gameSize) {
+  constructor(gameScreen, gameSize, provisional1, provisional2) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
+    this.provisional1 = provisional1;
+    this.provisional2 = provisional2;
 
     this.platformSize = {
       w: 100,
@@ -25,14 +27,8 @@ class Platform {
     this.gamePlatform.style.backgroundColor = `black`;
     this.gamePlatform.style.width = `${this.platformSize.w}px`;
     this.gamePlatform.style.height = `${this.platformSize.h}px`;
-    this.gamePlatform.style.left = `${this.random(
-      this.minSpace,
-      this.maxSpace
-    )}px`;
-    this.gamePlatform.style.top = `${this.random(
-      this.minSpace,
-      this.maxSpace
-    )}px`;
+    this.gamePlatform.style.left = `${this.provisional1}px`;
+    this.gamePlatform.style.top = `${this.provisional2}px`;
     this.gamePlatform.style.zIndex = 2;
     document.querySelector("#game-screen").appendChild(this.gamePlatform);
   }
