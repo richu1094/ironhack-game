@@ -7,11 +7,11 @@ class Player {
       w: 20,
       h: 20,
       x: this.gameSize.w / 2 - 10,
-      y: this.gameSize.h / 2 - 10,
-      base: this.gameSize.h,
-      dx: 10,
-      dy: 5,
-      gravity: 0.4,
+      y: this.gameSize.h - 10,
+      base: this.gameSize.h - 10,
+      dx: 0,
+      dy: 0,
+      gravity: 0.2,
     };
 
     this.init();
@@ -56,7 +56,10 @@ class Player {
   }
 
   moveUp() {
-    this.square.y -= 400;
+    if (this.square.y >= this.square.base) {
+      this.square.y -= 100;
+      this.square.dy -= 10
+    }
   }
 
   moveDown() {
