@@ -66,49 +66,37 @@ const Game = {
   },
 
   gameLoop() {
-    this.drawAll()
+    this.drawAll();
     this.isCollision();
     window.requestAnimationFrame(() => this.gameLoop());
   },
 
   drawAll() {
-    this.player.move()
+    this.player.move();
   },
 
   isCollision() {
-    let onPlatform = false
+    let onPlatform = false;
 
     this.platforms.forEach((elm) => {
       if (
-        this.player.squarePos.left + this.player.squareSize.w >= elm.platformPos.left &&
-        this.player.squarePos.left <= elm.platformPos.left + elm.platformSize.w &&
-        this.player.squarePos.top + this.player.squareSize.h < elm.platformPos.top + elm.platformSize.h
+        this.player.square.x + this.player.square.w >= elm.platformPos.left &&
+        this.player.square.x <= elm.platformPos.left + elm.platformSize.w &&
+        this.player.square.y + this.player.square.h <
+          elm.platformPos.top + elm.platformSize.h
       ) {
-        onPlatform = true
+        onPlatform = true;
         // console.log(onPlatform)
         if (onPlatform) {
-
-          this.player.squarePos.base = elm.platformPos.top - this.player.squareSize.h
-
+          this.player.square.base = elm.platformPos.top - this.player.square.h;
         }
-
+      } else if (!onPlatform) {
+        this.player.square.base = this.gameSize.h;
       }
-      else if (!onPlatform) {
-        this.player.squarePos.base = this.gameSize.h
-      }
-    })
-  }
+    });
+  },
 
-
-  //  // for (let i = 0; i < 5; i++) {
-  //     if (
-  //       this.squarePos.left < 100 + 100 &&
-  //       this.squarePos.left + 10 > 100 &&
-  //       this.squarePos.top < 200 + 7 &&
-  //       this.squarePos.top + 10 > 200
-  //     ) {
-  //       console.log("Hay colision");
-  //     }
-  //   }
-  // },
+  random(min, max) {
+    return Math.random() * (max - min) + min;
+  },
 };

@@ -3,20 +3,14 @@ class Player {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
 
-    this.squareSize = {
+    this.square = {
       w: 20,
       h: 20,
-    };
-
-    this.squarePos = {
-      left: this.gameSize.w / 2 - this.squareSize.w / 2,
-      top: this.gameSize.h / 2 - this.squareSize.h / 2,
+      x: this.gameSize.w / 2 - 10,
+      y: this.gameSize.h / 2 - 10,
       base: this.gameSize.h,
-    };
-
-    this.squareVel = {
-      left: 10,
-      top: 10,
+      dx: 10,
+      dy: 10,
       gravity: 0.3,
     };
 
@@ -27,10 +21,10 @@ class Player {
     this.squareElement = document.createElement("div");
 
     this.squareElement.style.position = "absolute";
-    this.squareElement.style.width = `${this.squareSize.w}px`;
-    this.squareElement.style.height = `${this.squareSize.h}px`;
-    this.squareElement.style.left = `${this.squarePos.left}px`;
-    this.squareElement.style.top = `${this.squarePos.top}px`;
+    this.squareElement.style.width = `${this.square.w}px`;
+    this.squareElement.style.height = `${this.square.h}px`;
+    this.squareElement.style.left = `${this.square.x}px`;
+    this.squareElement.style.top = `${this.square.y}px`;
     this.squareElement.style.zIndex = 3;
     this.squareElement.style.backgroundColor = `black`;
 
@@ -38,41 +32,41 @@ class Player {
   }
 
   move() {
-    if (this.squarePos.top < this.squarePos.base) {
-      this.squarePos.top += this.squareVel.top;
-      this.squareVel.top += this.squareVel.gravity;
+    if (this.square.y < this.square.base) {
+      this.square.y += this.square.dy;
+      this.square.dy += this.square.gravity;
     } else {
-      this.squarePos.top = this.squarePos.base;
-      this.squareVel.top = 1;
+      this.square.y = this.square.base;
+      this.square.dy = 1;
     }
 
     this.updatePosition();
   }
 
   moveLeft() {
-    if (this.squarePos.left > 0) {
-      this.squarePos.left -= this.squareVel.left;
+    if (this.square.x > 0) {
+      this.square.x -= this.square.dx;
     }
   }
 
   moveRight() {
-    if (this.squarePos.left < this.gameSize.w - this.squareSize.w) {
-      this.squarePos.left += this.squareVel.left;
+    if (this.square.x < this.gameSize.w - this.square.w) {
+      this.square.x += this.square.dx;
     }
   }
 
   moveUp() {
-    this.squarePos.top -= 150;
+    this.square.y -= 400;
   }
 
   moveDown() {
-    if (this.squarePos.top < this.gameSize.h) {
-      this.squarePos.top += this.squareVel.top;
+    if (this.square.y < this.gameSize.h) {
+      this.square.y += this.square.dy;
     }
   }
 
   updatePosition() {
-    this.squareElement.style.left = `${this.squarePos.left}px`;
-    this.squareElement.style.top = `${this.squarePos.top}px`;
+    this.squareElement.style.left = `${this.square.x}px`;
+    this.squareElement.style.top = `${this.square.y}px`;
   }
 }

@@ -3,19 +3,16 @@ class Platform {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
 
-
     this.platformSize = {
       w: 100,
-      h: 40,
+      h: 20,
     };
 
     //creamos esto para entenderlo mejor//
     this.platformPos = {
       left: platformPosleft,
-      top: platformPostop
-    }
-
-
+      top: platformPostop,
+    };
 
     this.minSpace = 100;
     this.maxSpace = 200;
@@ -23,15 +20,11 @@ class Platform {
     this.init();
   }
 
-  random(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
   init() {
     this.gamePlatform = document.createElement("div");
 
     this.gamePlatform.style.position = "absolute";
-    this.gamePlatform.style.backgroundColor = `black`;
+    this.gamePlatform.style.backgroundColor = `green`;
     this.gamePlatform.style.width = `${this.platformSize.w}px`;
     this.gamePlatform.style.height = `${this.platformSize.h}px`;
     this.gamePlatform.style.left = `${this.platformPos.left}px`;
