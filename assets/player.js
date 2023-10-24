@@ -10,8 +10,8 @@ class Player {
       y: this.gameSize.h / 2 - 10,
       base: this.gameSize.h,
       dx: 10,
-      dy: 10,
-      gravity: 0.3,
+      dy: 5,
+      gravity: 0.4,
     };
 
     this.init();

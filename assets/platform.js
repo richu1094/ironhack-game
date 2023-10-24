@@ -5,7 +5,7 @@ class Platform {
 
     this.platformSize = {
       w: 100,
-      h: 20,
+      h: 10,
     };
 
     //creamos esto para entenderlo mejor//
