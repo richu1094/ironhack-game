@@ -7,9 +7,13 @@ const Game = {
     h: window.innerHeight - 5,
   },
 
+  framesCounter: 0,
+
   background: undefined,
   player: undefined,
+  platforms: [],
 
+  platformDensity: 10,
 
   keys: {
     LEFT: { code: "ArrowLeft", pressed: false },
@@ -17,7 +21,7 @@ const Game = {
     UP: { code: "ArrowUp", pressed: false },
   },
 
-  platforms: [],
+
 
   init() {
     this.start();
@@ -27,11 +31,11 @@ const Game = {
   setEventListeners() {
     document.addEventListener("keydown", (key) => {
       switch (key.code) {
-        case this.keys.LEFT:
+        case this.keys.LEFT.code:
           this.keys.LEFT.pressed = true
           // this.player.moveLeft();
           break;
-        case this.keys.RIGHT:
+        case this.keys.RIGHT.code:
           this.keys.RIGHT.pressed = true
           // this.player.moveRight();
           break;
@@ -39,6 +43,7 @@ const Game = {
     });
     document.addEventListener("keyup", () => {
       this.keys.LEFT.pressed = false
+      this.keys.RIGHT.pressed = false
     })
   },
 
@@ -52,29 +57,35 @@ const Game = {
       this.gameScreen,
       this.gameSize,
       this.gameContainer
+
     );
 
 
-    this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.gameSize.w / 2, this.gameSize.h - 10));
-    this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(200, 300)));
-    this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(300, 400)));
-    this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(500, 600)));
-    this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(600, 700)));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.gameSize.w / 2, this.gameSize.h - 10));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(200, 300)));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(300, 400)));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(500, 600)));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(600, 700)));
 
 
     this.player = new Player(this.gameScreen, this.gameSize);
   },
 
   gameLoop() {
+    this.framesCounter > 5000 ? this.framesCounter = 0 : this.framesCounter++
+
     this.drawAll();
     this.isCollision();
+    this.generatePlatforms()
 
     if (this.keys.LEFT.pressed) {
-      this.square.x += 3
+      console.log("entro");
+      this.player.square.x -= 3
     }
 
     if (this.keys.RIGHT.pressed) {
-      this.square.x -= 3
+      console.log("entro");
+      this.player.square.x += 3
     }
 
     window.requestAnimationFrame(() => this.gameLoop());
@@ -82,6 +93,12 @@ const Game = {
 
   drawAll() {
     this.player.move();
+  },
+
+  generatePlatforms() {
+    if (this.framesCounter % this.platformDensity === 0) {
+      this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.gameSize.w / 2, this.gameSize.h - 10));
+    }
   },
 
   isCollision() {

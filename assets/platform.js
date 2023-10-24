@@ -8,14 +8,11 @@ class Platform {
       h: 10,
     };
 
-    //creamos esto para entenderlo mejor//
     this.platformPos = {
       left: platformPosleft,
       top: platformPostop,
     };
 
-    this.minSpace = 100;
-    this.maxSpace = 200;
 
     this.init();
   }
