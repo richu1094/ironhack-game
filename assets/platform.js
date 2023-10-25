@@ -1,5 +1,5 @@
 class Platform {
-  constructor(gameScreen, gameSize, platformPosleft, platformPostop) {
+  constructor(gameScreen, gameSize) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
 

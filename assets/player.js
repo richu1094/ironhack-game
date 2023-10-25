@@ -54,9 +54,8 @@ class Player {
       this.square.x += this.square.dx;
     }
   }
-  //hemos tocado esto para ajustar el salto (Santi)
-  jump() {
-    console.log(this.square.y, this.square.base)
+  
+  jump() {  
     if (this.square.y <= this.square.base) {
       this.square.y -= 20;
       this.square.dy = -5

@@ -21,14 +21,14 @@ const Game = {
   },
 
   init() {
-    this.setDimensions()
+    this.setDimensions();
     this.start();
     this.setEventListeners();
   },
 
   setDimensions() {
-    this.gameScreen.style.width = `${this.gameSize.w}px`
-    this.gameScreen.style.height = `${this.gameSize.h}px`
+    this.gameScreen.style.width = `${this.gameSize.w}px`;
+    this.gameScreen.style.height = `${this.gameSize.h}px`;
   },
 
   setEventListeners() {
@@ -70,17 +70,17 @@ const Game = {
     this.framesCounter > 5000 ? (this.framesCounter = 0) : this.framesCounter++;
 
     this.drawAll();
+
+    console.log(this.platforms.length);
     const collision = this.isCollision();
     this.handleJump(collision);
     this.generatePlatforms();
 
     if (this.keys.LEFT.pressed) {
-      console.log("entro");
       this.player.square.x -= 3;
     }
 
     if (this.keys.RIGHT.pressed) {
-      console.log("entro");
       this.player.square.x += 3;
     }
 
@@ -89,7 +89,7 @@ const Game = {
     } else if (this.player.square.x > this.gameSize.w) {
       this.player.square.x = -this.player.square.w;
     }
-
+    this.clearAll();
     window.requestAnimationFrame(() => this.gameLoop());
   },
 
@@ -111,6 +111,15 @@ const Game = {
         )
       );
     }
+  },
+
+  clearAll() {
+    this.platforms.forEach((eachPlatform, index) => {
+      if (eachPlatform.platformPos.top > this.gameSize.h) {
+        eachPlatform.gamePlatform.remove();
+        this.platforms.splice(index, 1);
+      }
+    });
   },
 
   //lo hemos separado en dos funciones, primero una para ver si hay colisión...
