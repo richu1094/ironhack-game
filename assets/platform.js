@@ -6,13 +6,13 @@ class Platform {
     this.posY = posY;
 
     this.platformSize = {
-      w: 100,
+      w: 125,
       h: 10,
     };
 
     this.platformPos = {
-      left: this.posX || this.random(0, this.gameSize.w - this.platformSize.w),
-      top: this.posY || 1,
+      left: this.random(0, this.gameSize.w - this.platformSize.w),
+      top: 0,
     };
 
     this.platformVel = {
@@ -35,7 +35,6 @@ class Platform {
     document.querySelector("#game-screen").appendChild(this.gamePlatform);
   }
 
-  //Hemos añadido esto (Antonio)
   move() {
     this.platformPos.top += this.platformVel.top;
     this.updatePosition();

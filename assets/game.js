@@ -11,8 +11,10 @@ const Game = {
   background: undefined,
   player: undefined,
   platforms: [],
+  fixedPlatform: [],
+  initialCounter: 0,
 
-  platformDensity: 50,
+  platformDensity: 35,
 
   keys: {
     LEFT: { code: "ArrowLeft", pressed: false },
@@ -58,11 +60,7 @@ const Game = {
   createElements() {
     this.background = new Background(this.gameScreen, this.gameSize);
     this.player = new Player(this.gameScreen, this.gameSize);
-    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.gameSize.w / 2, this.gameSize.h - 10));
-    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(200, 300)));
-    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(300, 400)));
-    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(500, 600)));
-    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(600, 700)));
+    this.fixedPlatform.push(new fixedPlatform(this.gameScreen, this.gameSize));
   },
 
   gameLoop() {
@@ -70,9 +68,11 @@ const Game = {
 
     this.drawAll();
 
-    console.log(this.platforms.length);
     const collision = this.isCollision();
+    const initialCollision = this.isInitialCollision();
+
     this.handleJump(collision);
+    this.handleInitialJump(initialCollision);
     this.generatePlatforms();
 
     if (this.keys.LEFT.pressed) {
@@ -88,12 +88,13 @@ const Game = {
     } else if (this.player.square.x > this.gameSize.w) {
       this.player.square.x = -this.player.square.w;
     }
+    this.handleInitialPlatform();
     this.clearAll();
     window.requestAnimationFrame(() => this.gameLoop());
   },
 
   drawAll() {
-    this.player.move(/*this.framesCounter*/);
+    this.player.move();
     this.platforms.forEach((elm) => {
       elm.move();
     });
@@ -121,7 +122,6 @@ const Game = {
     });
   },
 
-  //lo hemos separado en dos funciones, primero una para ver si hay colisión...
   isCollision() {
     let onPlatform = false;
 
@@ -139,7 +139,25 @@ const Game = {
     return onPlatform;
   },
 
-  //...y luego otra para ver cómo actua el player cuando hay colisión
+  isInitialCollision() {
+    let onInitialPlatform = false;
+
+    this.fixedPlatform.forEach((elm) => {
+      if (
+        this.player.square.x < elm.platformPos.left + elm.platformSize.w &&
+        this.player.square.x + this.player.square.w > elm.platformPos.left &&
+        this.player.square.y < elm.platformPos.top + elm.platformSize.h &&
+        this.player.square.h + this.player.square.y > elm.platformPos.top
+      ) {
+        onInitialPlatform = true;
+        this.initialCounter++;
+        console.log("---------", this.initialCounter++);
+      }
+    });
+
+    return onInitialPlatform;
+  },
+
   handleJump(isCollision) {
     if (isCollision) {
       this.player.jump();
@@ -147,7 +165,20 @@ const Game = {
       this.player.square.base = this.gameSize.h;
     }
   },
-  random(min, max) {
-    return Math.random() * (max - min) + min;
+  handleInitialJump(isInitialCollision) {
+    if (isInitialCollision) {
+      this.player.jump();
+    } else {
+      this.player.square.base = this.gameSize.h;
+    }
+  },
+
+  handleInitialPlatform() {
+    this.fixedPlatform.forEach((eachPlatform) => {
+      if (this.initialCounter >= 9) {
+        eachPlatform.gameFixedPlatform.remove();
+        this.fixedPlatform.splice(0);
+      }
+    });
   },
 };
