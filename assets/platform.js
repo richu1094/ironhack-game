@@ -9,7 +9,7 @@ class Platform {
     };
 
     this.platformPos = {
-      left: platformPosleft,
+      left: this.random(0,this.gameSize.w - this.platformSize.w),
       top: 0,
     };
 
@@ -44,5 +44,9 @@ class Platform {
   updatePosition() {
     this.gamePlatform.style.left = `${this.platformPos.left}px`;
     this.gamePlatform.style.top = `${this.platformPos.top}px`;
+  }
+
+  random(min, max) {
+    return Math.random() * (max - min) + min;
   }
 }

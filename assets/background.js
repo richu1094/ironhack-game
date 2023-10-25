@@ -2,10 +2,6 @@ class Background {
   constructor(gameScreen, gameSize) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
-    
-    console.log("esto es gameScreen", this.gameScreen);
-    console.log("esto es gameSize", this.gameSize);
-
     this.backgroundSize = { w: gameSize.w, h: gameSize.h };
     this.backgroundPosition = { left: 0, top: 0 };
 
