@@ -1,9 +1,7 @@
 class Platform {
-  constructor(gameScreen, gameSize, posX, posY) {
+  constructor(gameScreen, gameSize) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
-    this.posX = posX;
-    this.posY = posY;
 
     this.platformSize = {
       w: 125,
@@ -31,7 +29,7 @@ class Platform {
     this.gamePlatform.style.height = `${this.platformSize.h}px`;
     this.gamePlatform.style.left = `${this.platformPos.left}px`;
     this.gamePlatform.style.top = `${this.platformPos.top}px`;
-    this.gamePlatform.style.zIndex = 2;
+    
     document.querySelector("#game-screen").appendChild(this.gamePlatform);
   }
 

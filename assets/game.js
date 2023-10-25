@@ -3,7 +3,7 @@ const Game = {
 
   gameSize: {
     w: window.innerWidth / 3,
-    h: window.innerHeight - 5,
+    h: window.innerHeight,
   },
 
   framesCounter: 0,
@@ -12,7 +12,7 @@ const Game = {
   player: undefined,
   platforms: [],
   fixedPlatform: [],
-  initialCounter: 0,
+  canDie: false,
 
   platformDensity: 35,
 
@@ -20,6 +20,19 @@ const Game = {
     LEFT: { code: "ArrowLeft", pressed: false },
     RIGHT: { code: "ArrowRight", pressed: false },
     UP: { code: "ArrowUp", pressed: false },
+  },
+
+  gameLoop() {
+    this.totalFrames();
+    this.isCollision();
+    this.isInitialCollision();
+    this.drawAll();
+    this.generatePlatforms();
+    this.movementKeys();
+    this.sideToSide();
+    this.clearAll();
+    this.finish();
+    window.requestAnimationFrame(() => this.gameLoop());
   },
 
   init() {
@@ -33,28 +46,32 @@ const Game = {
     this.gameScreen.style.height = `${this.gameSize.h}px`;
   },
 
+  start() {
+    this.createElements();
+    this.gameLoop();
+  },
+
   setEventListeners() {
     document.addEventListener("keydown", (key) => {
       switch (key.code) {
         case this.keys.LEFT.code:
           this.keys.LEFT.pressed = true;
-          // this.player.moveLeft();
           break;
         case this.keys.RIGHT.code:
           this.keys.RIGHT.pressed = true;
-          // this.player.moveRight();
           break;
       }
     });
-    document.addEventListener("keyup", () => {
-      this.keys.LEFT.pressed = false;
-      this.keys.RIGHT.pressed = false;
+    document.addEventListener("keyup", (key) => {
+      switch (key.code) {
+        case this.keys.LEFT.code:
+          this.keys.LEFT.pressed = false;
+          break;
+        case this.keys.RIGHT.code:
+          this.keys.RIGHT.pressed = false;
+          break;
+      }
     });
-  },
-
-  start() {
-    this.createElements();
-    this.gameLoop();
   },
 
   createElements() {
@@ -63,34 +80,10 @@ const Game = {
     this.fixedPlatform.push(new fixedPlatform(this.gameScreen, this.gameSize));
   },
 
-  gameLoop() {
-    this.framesCounter > 5000 ? (this.framesCounter = 0) : this.framesCounter++;
-
-    this.drawAll();
-
-    const collision = this.isCollision();
-    const initialCollision = this.isInitialCollision();
-
-    this.handleJump(collision);
-    this.handleInitialJump(initialCollision);
-    this.generatePlatforms();
-
-    if (this.keys.LEFT.pressed) {
-      this.player.square.x -= 3;
-    }
-
-    if (this.keys.RIGHT.pressed) {
-      this.player.square.x += 3;
-    }
-
-    if (this.player.square.x + this.player.square.w < 0) {
-      this.player.square.x = this.gameSize.w;
-    } else if (this.player.square.x > this.gameSize.w) {
-      this.player.square.x = -this.player.square.w;
-    }
-    this.handleInitialPlatform();
-    this.clearAll();
-    window.requestAnimationFrame(() => this.gameLoop());
+  totalFrames() {
+    this.framesCounter > 20000
+      ? (this.framesCounter = 0)
+      : this.framesCounter++;
   },
 
   drawAll() {
@@ -123,8 +116,6 @@ const Game = {
   },
 
   isCollision() {
-    let onPlatform = false;
-
     this.platforms.forEach((elm) => {
       if (
         this.player.square.x < elm.platformPos.left + elm.platformSize.w &&
@@ -132,16 +123,14 @@ const Game = {
         this.player.square.y < elm.platformPos.top + elm.platformSize.h &&
         this.player.square.h + this.player.square.y > elm.platformPos.top
       ) {
-        onPlatform = true;
+        this.player.jump();
+        this.canDie = true;
       }
+      this.player.square.base = this.gameSize.h;
     });
-
-    return onPlatform;
   },
 
   isInitialCollision() {
-    let onInitialPlatform = false;
-
     this.fixedPlatform.forEach((elm) => {
       if (
         this.player.square.x < elm.platformPos.left + elm.platformSize.w &&
@@ -149,36 +138,36 @@ const Game = {
         this.player.square.y < elm.platformPos.top + elm.platformSize.h &&
         this.player.square.h + this.player.square.y > elm.platformPos.top
       ) {
-        onInitialPlatform = true;
-        this.initialCounter++;
-        console.log("---------", this.initialCounter++);
+        this.player.jump();
       }
+      this.player.square.base = this.gameSize.h;
     });
-
-    return onInitialPlatform;
   },
 
-  handleJump(isCollision) {
-    if (isCollision) {
-      this.player.jump();
-    } else {
-      this.player.square.base = this.gameSize.h;
-    }
-  },
-  handleInitialJump(isInitialCollision) {
-    if (isInitialCollision) {
-      this.player.jump();
-    } else {
-      this.player.square.base = this.gameSize.h;
+  sideToSide() {
+    if (this.player.square.x + this.player.square.w < 0) {
+      this.player.square.x = this.gameSize.w;
+    } else if (this.player.square.x > this.gameSize.w) {
+      this.player.square.x = -this.player.square.w;
     }
   },
 
-  handleInitialPlatform() {
-    this.fixedPlatform.forEach((eachPlatform) => {
-      if (this.initialCounter >= 9) {
-        eachPlatform.gameFixedPlatform.remove();
-        this.fixedPlatform.splice(0);
-      }
-    });
+  movementKeys() {
+    if (this.keys.LEFT.pressed) {
+      this.player.square.x -= 3;
+    }
+
+    if (this.keys.RIGHT.pressed) {
+      this.player.square.x += 3;
+    }
+  },
+
+  finish() {
+    console.log(this.player.square.y + 20, this.gameSize.h);
+    if (this.canDie && this.player.square.y + 20 > this.gameSize.h) {
+      this.gameScreen.style.display = "none";
+      // this.gameOver.style.display = "block";
+      return;
+    }
   },
 };

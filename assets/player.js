@@ -25,7 +25,6 @@ class Player {
     this.squareElement.style.height = `${this.square.h}px`;
     this.squareElement.style.left = `${this.square.x}px`;
     this.squareElement.style.top = `${this.square.y}px`;
-    this.squareElement.style.zIndex = 3;
     this.squareElement.style.backgroundColor = `black`;
 
     document.querySelector("#game-screen").appendChild(this.squareElement);

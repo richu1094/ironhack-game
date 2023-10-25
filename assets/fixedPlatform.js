@@ -28,7 +28,7 @@ class fixedPlatform {
     this.gameFixedPlatform.style.height = `${this.platformSize.h}px`;
     this.gameFixedPlatform.style.left = `${this.platformPos.left}px`;
     this.gameFixedPlatform.style.top = `${this.platformPos.top}px`;
-    this.gameFixedPlatform.style.zIndex = 2;
+    
     document.querySelector("#game-screen").appendChild(this.gameFixedPlatform);
   }
 
