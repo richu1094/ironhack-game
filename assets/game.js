@@ -166,7 +166,7 @@ const Game = {
     console.log(this.player.square.y + 20, this.gameSize.h);
     if (this.canDie && this.player.square.y + 20 > this.gameSize.h) {
       this.gameScreen.style.display = "none";
-      // this.gameOver.style.display = "block";
+      document.getElementById("game-over").style.display = "block";
       return;
     }
   },
