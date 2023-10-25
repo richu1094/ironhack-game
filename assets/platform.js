@@ -1,7 +1,9 @@
 class Platform {
-  constructor(gameScreen, gameSize) {
+  constructor(gameScreen, gameSize, posX, posY) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
+    this.posX = posX;
+    this.posY = posY;
 
     this.platformSize = {
       w: 100,
@@ -9,15 +11,13 @@ class Platform {
     };
 
     this.platformPos = {
-      left: this.random(0,this.gameSize.w - this.platformSize.w),
-      top: 0,
+      left: this.posX || this.random(0, this.gameSize.w - this.platformSize.w),
+      top: this.posY || 1,
     };
 
-    //Hemos añadido esto (Antonio)
     this.platformVel = {
-      top: 3
-    }
-
+      top: 3,
+    };
 
     this.init();
   }
@@ -37,7 +37,7 @@ class Platform {
 
   //Hemos añadido esto (Antonio)
   move() {
-    this.platformPos.top += this.platformVel.top
+    this.platformPos.top += this.platformVel.top;
     this.updatePosition();
   }
 

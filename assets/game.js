@@ -58,7 +58,6 @@ const Game = {
   createElements() {
     this.background = new Background(this.gameScreen, this.gameSize);
     this.player = new Player(this.gameScreen, this.gameSize);
-
     // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.gameSize.w / 2, this.gameSize.h - 10));
     // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(200, 300)));
     // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(300, 400)));
