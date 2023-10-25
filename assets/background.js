@@ -1,8 +1,10 @@
 class Background {
-  constructor(gameScreen, gameSize, gameContainer) {
+  constructor(gameScreen, gameSize) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
-    this.gameContainer = gameContainer;
+    
+    console.log("esto es gameScreen", this.gameScreen);
+    console.log("esto es gameSize", this.gameSize);
 
     this.backgroundSize = { w: gameSize.w, h: gameSize.h };
     this.backgroundPosition = { left: 0, top: 0 };
@@ -19,8 +21,9 @@ class Background {
     this.gameBackground.style.height = `${this.backgroundSize.h}px`;
     this.gameBackground.style.left = `${this.backgroundPosition.left}px`;
     this.gameBackground.style.top = `${this.backgroundPosition.top}px`;
-    this.gameBackground.style.zIndex = 1;
+    // this.gameBackground.style.zIndex = 1;
+    //this.gameBackground.style.border = `10px solid red`
 
-    this.gameContainer.appendChild(this.gameBackground);
+    this.gameScreen.appendChild(this.gameBackground);
   }
 }

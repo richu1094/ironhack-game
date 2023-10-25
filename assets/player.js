@@ -7,7 +7,7 @@ class Player {
       w: 20,
       h: 20,
       x: this.gameSize.w / 2 - 10,
-      y: this.gameSize.h / 2 - 10,
+      y: this.gameSize.h - 10,
       base: this.gameSize.h - 10,
       dx: 0,
       dy: 0,
@@ -34,9 +34,10 @@ class Player {
   move() {
     if (this.square.y < this.square.base) {
       this.square.y += this.square.dy;
+      this.square.dy += this.square.gravity;
     } else {
       this.square.y = this.square.base;
-      this.square.dy = 0;
+      this.square.dy = 1;
     }
 
     this.updatePosition();
@@ -53,11 +54,12 @@ class Player {
       this.square.x += this.square.dx;
     }
   }
-
-  moveUp() {
-    if (this.square.y >= this.square.base) {
-      this.square.y -= 100;
-      this.square.dy -= 10;
+  //hemos tocado esto para ajustar el salto (Santi)
+  jump() {
+    console.log(this.square.y, this.square.base)
+    if (this.square.y <= this.square.base) {
+      this.square.y -= 20;
+      this.square.dy = -5
     }
   }
 

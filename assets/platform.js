@@ -1,15 +1,23 @@
 class Platform {
-  constructor(gameScreen, gameSize, x, y) {
+  constructor(gameScreen, gameSize, platformPosleft, platformPostop) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
 
-    this.platform = {
+    this.platformSize = {
       w: 100,
       h: 10,
-      x: x,
-      y: y,
-      dy: 0,
     };
+
+    this.platformPos = {
+      left: platformPosleft,
+      top: 0,
+    };
+
+    //Hemos añadido esto (Antonio)
+    this.platformVel = {
+      top: 3
+    }
+
 
     this.init();
   }
@@ -19,24 +27,22 @@ class Platform {
 
     this.gamePlatform.style.position = "absolute";
     this.gamePlatform.style.backgroundColor = `green`;
-    this.gamePlatform.style.width = `${this.platform.w}px`;
-    this.gamePlatform.style.height = `${this.platform.h}px`;
-    this.gamePlatform.style.left = `${this.platform.x}px`;
-    this.gamePlatform.style.top = `${this.platform.y}px`;
+    this.gamePlatform.style.width = `${this.platformSize.w}px`;
+    this.gamePlatform.style.height = `${this.platformSize.h}px`;
+    this.gamePlatform.style.left = `${this.platformPos.left}px`;
+    this.gamePlatform.style.top = `${this.platformPos.top}px`;
     this.gamePlatform.style.zIndex = 2;
-    
     document.querySelector("#game-screen").appendChild(this.gamePlatform);
   }
-  
-  
-  // REPASO MAÑANA MOVIEMIENTO DE LAS PLATAFORMAS ---------------------------------------------------------------------------------------
+
+  //Hemos añadido esto (Antonio)
   move() {
-    this.platform.y -= 1;
+    this.platformPos.top += this.platformVel.top
     this.updatePosition();
   }
 
   updatePosition() {
-    this.gamePlatform.style.left = `${this.platform.x}px`;
-    this.gamePlatform.style.top = `${this.platform.y}px`;
+    this.gamePlatform.style.left = `${this.platformPos.left}px`;
+    this.gamePlatform.style.top = `${this.platformPos.top}px`;
   }
 }

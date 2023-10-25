@@ -1,5 +1,4 @@
 const Game = {
-  gameContainer: document.querySelector("#game-container"),
   gameScreen: document.querySelector("#game-screen"),
 
   gameSize: {
@@ -13,7 +12,7 @@ const Game = {
   player: undefined,
   platforms: [],
 
-  platformDensity: 10,
+  platformDensity: 50,
 
   keys: {
     LEFT: { code: "ArrowLeft", pressed: false },
@@ -22,8 +21,14 @@ const Game = {
   },
 
   init() {
+    this.setDimensions()
     this.start();
     this.setEventListeners();
+  },
+
+  setDimensions() {
+    this.gameScreen.style.width = `${this.gameSize.w}px`
+    this.gameScreen.style.height = `${this.gameSize.h}px`
   },
 
   setEventListeners() {
@@ -31,9 +36,11 @@ const Game = {
       switch (key.code) {
         case this.keys.LEFT.code:
           this.keys.LEFT.pressed = true;
+          // this.player.moveLeft();
           break;
         case this.keys.RIGHT.code:
           this.keys.RIGHT.pressed = true;
+          // this.player.moveRight();
           break;
       }
     });
@@ -49,73 +56,34 @@ const Game = {
   },
 
   createElements() {
-    this.background = new Background(
-      this.gameScreen,
-      this.gameSize,
-      this.gameContainer
-    );
-
-    this.platforms.push(
-      new Platform(
-        this.gameScreen,
-        this.gameSize,
-        this.gameSize.w / 2 - 50,
-        this.gameSize.h - 10
-      )
-    );
-    this.platforms.push(
-      new Platform(
-        this.gameScreen,
-        this.gameSize,
-        this.random(0, this.gameSize.w - 100),
-        this.random(200, 300)
-      )
-    );
-    this.platforms.push(
-      new Platform(
-        this.gameScreen,
-        this.gameSize,
-        this.random(0, this.gameSize.w - 100),
-        this.random(300, 400)
-      )
-    );
-    this.platforms.push(
-      new Platform(
-        this.gameScreen,
-        this.gameSize,
-        this.random(0, this.gameSize.w - 100),
-        this.random(500, 600)
-      )
-    );
-    this.platforms.push(
-      new Platform(
-        this.gameScreen,
-        this.gameSize,
-        this.random(0, this.gameSize.w - 100),
-        this.random(600, 700)
-      )
-    );
-
+    this.background = new Background(this.gameScreen, this.gameSize);
     this.player = new Player(this.gameScreen, this.gameSize);
+
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.gameSize.w / 2, this.gameSize.h - 10));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(200, 300)));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(300, 400)));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(500, 600)));
+    // this.platforms.push(new Platform(this.gameScreen, this.gameSize, this.random(0, this.gameSize.w - 100), this.random(600, 700)));
   },
 
   gameLoop() {
-    // this.framesCounter > 5000 ? (this.framesCounter = 0) : this.framesCounter++;
+    this.framesCounter > 5000 ? (this.framesCounter = 0) : this.framesCounter++;
 
     this.drawAll();
-    this.isCollision();
-    this.player.square.dy += this.player.square.gravity;
-    // this.generatePlatforms();
+    const collision = this.isCollision();
+    this.handleJump(collision);
+    this.generatePlatforms();
 
     if (this.keys.LEFT.pressed) {
+      console.log("entro");
       this.player.square.x -= 3;
     }
 
     if (this.keys.RIGHT.pressed) {
+      console.log("entro");
       this.player.square.x += 3;
     }
 
-    // REPASO MAÑANA MOVIEMIENTO LATERAL ---------------------------------------------------------------------------------------
     if (this.player.square.x + this.player.square.w < 0) {
       this.player.square.x = this.gameSize.w;
     } else if (this.player.square.x > this.gameSize.w) {
@@ -126,42 +94,51 @@ const Game = {
   },
 
   drawAll() {
-    this.player.move();
-    this.platforms.forEach((eachPlatform) => eachPlatform.move());
-  },
-
-  // generatePlatforms() {
-  //   if (this.framesCounter % this.platformDensity === 0) {
-  //     this.platforms.push(
-  //       new Platform(
-  //         this.gameScreen,
-  //         this.gameSize,
-  //         this.gameSize.w / 2,
-  //         this.gameSize.h - 10
-  //       )
-  //     );
-  //   }
-  // },
-
-  isCollision() {
-    this.platforms.forEach((eachPlatform) => {
-      if (
-        this.player.square.x <
-          eachPlatform.platform.x + eachPlatform.platform.w &&
-        this.player.square.x + this.player.square.w > eachPlatform.platform.x &&
-        this.player.square.y <
-          eachPlatform.platform.y + eachPlatform.platform.h &&
-        this.player.square.h + this.player.square.y > eachPlatform.platform.y
-      ) {
-        this.player.square.base =
-          eachPlatform.platform.y - this.player.square.h;
-        this.player.moveUp();
-      } else {
-        this.player.square.base = this.gameSize.h;
-      }
+    this.player.move(/*this.framesCounter*/);
+    this.platforms.forEach((elm) => {
+      elm.move();
     });
   },
 
+  generatePlatforms() {
+    if (this.framesCounter % this.platformDensity === 0) {
+      this.platforms.push(
+        new Platform(
+          this.gameScreen,
+          this.gameSize,
+          this.gameSize.w / 2,
+          this.gameSize.h - 10
+        )
+      );
+    }
+  },
+
+  //lo hemos separado en dos funciones, primero una para ver si hay colisión...
+  isCollision() {
+    let onPlatform = false;
+
+    this.platforms.forEach((elm) => {
+      if (
+        this.player.square.x < elm.platformPos.left + elm.platformSize.w &&
+        this.player.square.x + this.player.square.w > elm.platformPos.left &&
+        this.player.square.y < elm.platformPos.top + elm.platformSize.h &&
+        this.player.square.h + this.player.square.y > elm.platformPos.top
+      ) {
+        onPlatform = true;
+      }
+    });
+
+    return onPlatform;
+  },
+
+  //...y luego otra para ver cómo actua el player cuando hay colisión
+  handleJump(isCollision) {
+    if (isCollision) {
+      this.player.jump();
+    } else {
+      this.player.square.base = this.gameSize.h;
+    }
+  },
   random(min, max) {
     return Math.random() * (max - min) + min;
   },
