@@ -43,6 +43,7 @@ const Game = {
     this.setDimensions();
     this.start();
     this.setEventListeners();
+    document.getElementById("game-container").style.display = "block";
   },
 
   setDimensions() {

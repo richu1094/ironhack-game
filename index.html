@@ -8,14 +8,15 @@
   </head>
 
   <body>
-    <div id="game-start" style="display: none">
+    <div id="game-start" style="display: block">
+      <div id="button-start"></div>
     </div>
-    <div id="game-container">
+    <div id="game-container" style="display: none">
       <figure id="game-screen"></figure>
     </div>
 
     <div id="game-over" style="display: none">
-      <h2>Wasted</h2>
+      <div id="button-restart" onClick="window.location.reload()"></div>
     </div>
 
     <script src="./assets/background.js"></script>
