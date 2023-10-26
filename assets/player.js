@@ -1,11 +1,11 @@
+const jumpSound = new Audio("../sounds/jump.mp3");
 class Player {
   constructor(gameScreen, gameSize) {
     this.gameScreen = gameScreen;
     this.gameSize = gameSize;
-
     this.square = {
-      w: 20,
-      h: 20,
+      w: 40,
+      h: 40,
       x: this.gameSize.w / 2 - 10,
       y: this.gameSize.h - 100,
       base: this.gameSize.h - 100,
@@ -21,7 +21,7 @@ class Player {
 
     this.playerSprite = {
       backgroundPositionX: 0,
-      totalFrames: 3,
+      totalFrames: 22,
       currentFrame: 1,
       frameSpeed: 4,
     };
@@ -37,10 +37,10 @@ class Player {
     this.squareElement.style.height = `${this.square.h}px`;
     this.squareElement.style.left = `${this.square.x}px`;
     this.squareElement.style.top = `${this.square.y}px`;
-    // this.squareElement.style.backgroundColor = `black`;
 
     this.squareElement.style.backgroundImage = `url(./images/playerbg.png)`;
-    this.squareElement.style.backgroundSize = `300px 100px`;
+    this.squareElement.style.backgroundSize = `880px 40px`;
+    this.squareElement.style.transform = `scaleX(1)`;
 
     this.squareElement.style.overflow = "hidden";
     this.squareElement.style.backgroundRepeat = "no-repeat";
@@ -76,15 +76,11 @@ class Player {
   }
 
   moveLeft() {
-    if (this.square.x > 0) {
-      this.square.x -= this.square.dx;
-    }
+    this.squareElement.style.transform = `scaleX(-1)`;
   }
 
   moveRight() {
-    if (this.square.x < this.gameSize.w - this.square.w) {
-      this.square.x += this.square.dx;
-    }
+    this.squareElement.style.transform = `scaleX(1)`;
   }
 
   jump() {
@@ -92,6 +88,7 @@ class Player {
       this.square.y -= 20;
       this.square.dy = -5;
     }
+    jumpSound.play();
   }
 
   moveDown() {

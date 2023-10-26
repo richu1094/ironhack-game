@@ -5,7 +5,7 @@ class Platform {
 
     this.platformSize = {
       w: 125,
-      h: 10,
+      h: 20,
     };
 
     this.platformPos = {
@@ -24,12 +24,17 @@ class Platform {
     this.gamePlatform = document.createElement("div");
 
     this.gamePlatform.style.position = "absolute";
-    this.gamePlatform.style.backgroundColor = `green`;
+    // this.gamePlatform.style.backgroundColor = `green`;
     this.gamePlatform.style.width = `${this.platformSize.w}px`;
     this.gamePlatform.style.height = `${this.platformSize.h}px`;
     this.gamePlatform.style.left = `${this.platformPos.left}px`;
     this.gamePlatform.style.top = `${this.platformPos.top}px`;
-    
+
+    this.gamePlatform.style.backgroundImage = `url(./images/cloud2.png)`;
+    this.gamePlatform.style.backgroundSize = `125px 20px`;
+
+    this.gamePlatform.style.overflow = "hidden";
+
     document.querySelector("#game-screen").appendChild(this.gamePlatform);
   }
 

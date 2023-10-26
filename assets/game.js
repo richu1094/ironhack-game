@@ -1,3 +1,6 @@
+const bgSound = new Audio("../sounds/bgmusic.mp3");
+const dyingSound = new Audio("../sounds/ded.mp3");
+
 const Game = {
   gameScreen: document.querySelector("#game-screen"),
 
@@ -5,7 +8,6 @@ const Game = {
     w: window.innerWidth / 3,
     h: window.innerHeight,
   },
-
   framesCounter: 0,
 
   background: undefined,
@@ -13,8 +15,9 @@ const Game = {
   platforms: [],
   fixedPlatform: [],
   canDie: false,
+  isAlive: true,
 
-  platformDensity: 30,
+  platformDensity: 40,
 
   keys: {
     LEFT: { code: "ArrowLeft", pressed: false },
@@ -23,6 +26,7 @@ const Game = {
   },
 
   gameLoop() {
+    bgSound.play();
     this.totalFrames();
     this.isCollision();
     this.isInitialCollision();
@@ -123,7 +127,9 @@ const Game = {
         this.player.square.y < elm.platformPos.top + elm.platformSize.h &&
         this.player.square.h + this.player.square.y > elm.platformPos.top
       ) {
-        this.player.jump();
+        if (this.isAlive == true) {
+          this.player.jump();
+        }
         this.canDie = true;
       }
       this.player.square.base = this.gameSize.h;
@@ -138,7 +144,9 @@ const Game = {
         this.player.square.y < elm.platformPos.top + elm.platformSize.h &&
         this.player.square.h + this.player.square.y > elm.platformPos.top
       ) {
-        this.player.jump();
+        if (this.isAlive == true) {
+          this.player.jump();
+        }
       }
       this.player.square.base = this.gameSize.h;
     });
@@ -155,16 +163,21 @@ const Game = {
   movementKeys() {
     if (this.keys.LEFT.pressed) {
       this.player.square.x -= 3;
+      this.player.moveLeft();
     }
 
     if (this.keys.RIGHT.pressed) {
       this.player.square.x += 3;
+      this.player.moveRight();
     }
   },
 
   finish() {
-    console.log(this.player.square.y + 20, this.gameSize.h);
-    if (this.canDie && this.player.square.y + 20 > this.gameSize.h) {
+    if (this.canDie && this.player.square.y + 40 > this.gameSize.h) {
+      this.isAlive = false;
+      if (this.isAlive == true) {
+        dyingSound.play();
+      }
       this.gameScreen.style.display = "none";
       document.getElementById("game-over").style.display = "block";
       return;
