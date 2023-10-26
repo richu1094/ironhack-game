@@ -14,7 +14,7 @@ const Game = {
   fixedPlatform: [],
   canDie: false,
 
-  platformDensity: 35,
+  platformDensity: 30,
 
   keys: {
     LEFT: { code: "ArrowLeft", pressed: false },
@@ -87,7 +87,7 @@ const Game = {
   },
 
   drawAll() {
-    this.player.move();
+    this.player.move(this.framesCounter);
     this.platforms.forEach((elm) => {
       elm.move();
     });

@@ -13,7 +13,7 @@ class Background {
     this.gameBackground = document.createElement("img");
 
     this.gameBackground.style.position = "absolute";
-    this.gameBackground.src = "./images/clouds.jpg";
+    this.gameBackground.src = "./images/bg.png";
     this.gameBackground.style.width = `${this.backgroundSize.w}px`;
     this.gameBackground.style.height = `${this.backgroundSize.h}px`;
     this.gameBackground.style.left = `${this.backgroundPosition.left}px`;
