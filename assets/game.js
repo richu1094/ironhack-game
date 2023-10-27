@@ -3,6 +3,7 @@ const dyingSound = new Audio("../sounds/ded.mp3");
 
 const Game = {
   gameScreen: document.querySelector("#game-screen"),
+  getPoints: document.querySelector("#points"),
 
   gameSize: {
     w: window.innerWidth / 3,
@@ -16,6 +17,8 @@ const Game = {
   fixedPlatform: [],
   canDie: false,
   isAlive: true,
+  points: false,
+  jumpCounter: 0,
 
   platformDensity: 40,
 
@@ -36,6 +39,9 @@ const Game = {
     this.sideToSide();
     this.clearAll();
     this.finish();
+    if (this.canDie) {
+      this.getPoints.innerText = `${this.jumpCounter}`;
+    }
     window.requestAnimationFrame(() => this.gameLoop());
   },
 
@@ -130,6 +136,7 @@ const Game = {
       ) {
         if (this.isAlive == true) {
           this.player.jump();
+          this.jumpCounter++;
         }
         this.canDie = true;
       }

@@ -7,12 +7,13 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  background: center;
   background-image: url("../images/startscreen.png");
 }
 
 #button-start {
   position: absolute;
-  top: 75%;
+  top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 200px;
@@ -36,16 +37,26 @@
 #game-over {
   width: 100vw;
   height: 100vh;
+  background: center;
   background-image: url("../images/gameoverscreen.png");
 }
 
 #button-restart {
   position: absolute;
-  top: 75%;
+  top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 200px;
   width: 500px;
   background-image: url("../images/restartbutton.png");
   background-repeat: no-repeat;
+}
+
+#points {
+  z-index: 5;
+  position: absolute;
+  color: blueviolet;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
