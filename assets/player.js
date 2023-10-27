@@ -1,4 +1,4 @@
-const jumpSound = new Audio("../sounds/jump.mp3");
+const jumpSound = new Audio("./sounds/jump.mp3");
 class Player {
   constructor(gameScreen, gameSize) {
     this.gameScreen = gameScreen;

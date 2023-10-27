@@ -1,5 +1,5 @@
-const bgSound = new Audio("../sounds/bgmusic.mp3");
-const dyingSound = new Audio("../sounds/ded.mp3");
+const bgSound = new Audio("./sounds/bgmusic.mp3");
+const dyingSound = new Audio("./sounds/ded.mp3");
 
 const Game = {
   gameScreen: document.querySelector("#game-screen"),
