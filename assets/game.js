@@ -39,9 +39,7 @@ const Game = {
     this.sideToSide();
     this.clearAll();
     this.finish();
-    if (this.canDie) {
-      this.getPoints.innerText = `${this.jumpCounter}`;
-    }
+    this.pointsCounter();
     window.requestAnimationFrame(() => this.gameLoop());
   },
 
@@ -189,6 +187,12 @@ const Game = {
       this.gameScreen.style.display = "none";
       document.getElementById("game-over").style.display = "block";
       return;
+    }
+  },
+
+  pointsCounter() {
+    if (this.canDie) {
+      this.getPoints.innerText = `${this.jumpCounter}`;
     }
   },
 };
